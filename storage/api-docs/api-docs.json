@@ -7,15 +7,13 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api"
+            "url": "https://agence-immobliere-main-gjykqe.laravel.cloud/api"
         }
     ],
     "paths": {
         "/auth/register": {
             "post": {
-                "tags": [
-                    "Authentication"
-                ],
+                "tags": ["Authentication"],
                 "summary": "Inscrire un nouvel utilisateur",
                 "description": "Crée un nouveau compte utilisateur. Seuls les rôles 'agent' et 'guest' sont autorisés via cette route. Les comptes admin doivent être créés directement en base de données.",
                 "operationId": "register",
@@ -58,10 +56,7 @@
                                     "role": {
                                         "description": "Rôle de l'utilisateur (optionnel, défaut: guest). Le rôle 'admin' n'est PAS autorisé.",
                                         "type": "string",
-                                        "enum": [
-                                            "agent",
-                                            "guest"
-                                        ],
+                                        "enum": ["agent", "guest"],
                                         "example": "agent"
                                     }
                                 },
@@ -122,9 +117,7 @@
         },
         "/auth/login": {
             "post": {
-                "tags": [
-                    "Authentication"
-                ],
+                "tags": ["Authentication"],
                 "summary": "Connexion utilisateur",
                 "description": "Authentifie un utilisateur et retourne un token Bearer",
                 "operationId": "login",
@@ -134,10 +127,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
+                                "required": ["email", "password"],
                                 "properties": {
                                     "email": {
                                         "description": "Adresse email",
@@ -202,9 +192,7 @@
         },
         "/auth/logout": {
             "post": {
-                "tags": [
-                    "Authentication"
-                ],
+                "tags": ["Authentication"],
                 "summary": "Déconnexion utilisateur",
                 "description": "Révoque tous les tokens de l'utilisateur authentifié",
                 "operationId": "logout",
@@ -238,9 +226,7 @@
         },
         "/auth/me": {
             "get": {
-                "tags": [
-                    "Authentication"
-                ],
+                "tags": ["Authentication"],
                 "summary": "Obtenir le profil utilisateur",
                 "description": "Retourne les informations de l'utilisateur authentifié",
                 "operationId": "me",
@@ -273,9 +259,7 @@
         },
         "/images/properties/{propertyId}": {
             "post": {
-                "tags": [
-                    "Images"
-                ],
+                "tags": ["Images"],
                 "summary": "Télécharger des images pour un bien",
                 "description": "Permet au propriétaire ou à un admin d'ajouter des images à un bien. Une ou plusieurs images acceptées. Max 10 images, 5MB par image, formats: jpeg, png, webp.",
                 "operationId": "uploadImages",
@@ -297,9 +281,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "images"
-                                ],
+                                "required": ["images"],
                                 "properties": {
                                     "images": {
                                         "description": "Fichier(s) image(s) - Une seule image ou plusieurs (max 10)",
@@ -413,9 +395,7 @@
         },
         "/images/{id}": {
             "delete": {
-                "tags": [
-                    "Images"
-                ],
+                "tags": ["Images"],
                 "summary": "Supprimer une image",
                 "description": "Supprime une image. Seul le propriétaire du bien ou un admin peut supprimer.",
                 "operationId": "deleteImage",
@@ -505,9 +485,7 @@
         },
         "/images/{id}/set-primary": {
             "post": {
-                "tags": [
-                    "Images"
-                ],
+                "tags": ["Images"],
                 "summary": "Définir une image comme principale",
                 "description": "Marque une image comme image principale du bien. L'ancienne image principale perd automatiquement ce statut.",
                 "operationId": "setPrimaryImage",
@@ -600,9 +578,7 @@
         },
         "/properties": {
             "get": {
-                "tags": [
-                    "Properties"
-                ],
+                "tags": ["Properties"],
                 "summary": "Liste des biens immobiliers",
                 "description": "Retourne la liste paginée des biens avec filtres et recherche. Les visiteurs ne voient que les biens publiés.",
                 "operationId": "getProperties",
@@ -641,11 +617,7 @@
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "enum": [
-                                "disponible",
-                                "vendu",
-                                "location"
-                            ],
+                            "enum": ["disponible", "vendu", "location"],
                             "example": "disponible"
                         }
                     },
@@ -731,9 +703,7 @@
                 }
             },
             "post": {
-                "tags": [
-                    "Properties"
-                ],
+                "tags": ["Properties"],
                 "summary": "Créer un nouveau bien",
                 "description": "Permet à un admin ou agent de créer un bien immobilier. Le titre est généré automatiquement.",
                 "operationId": "createProperty",
@@ -888,9 +858,7 @@
         },
         "/properties/{id}": {
             "get": {
-                "tags": [
-                    "Properties"
-                ],
+                "tags": ["Properties"],
                 "summary": "Afficher un bien spécifique",
                 "description": "Récupère les détails d'un bien. Les visiteurs ne peuvent voir que les biens publiés.",
                 "operationId": "showProperty",
@@ -961,9 +929,7 @@
                 }
             },
             "put": {
-                "tags": [
-                    "Properties"
-                ],
+                "tags": ["Properties"],
                 "summary": "Mettre à jour un bien",
                 "description": "Permet au propriétaire ou à un admin de modifier un bien. Le titre est recalculé automatiquement.",
                 "operationId": "updateProperty",
@@ -1118,9 +1084,7 @@
                 ]
             },
             "delete": {
-                "tags": [
-                    "Properties"
-                ],
+                "tags": ["Properties"],
                 "summary": "Supprimer un bien",
                 "description": "Supprime un bien (soft delete). Seul le propriétaire ou un admin peut supprimer.",
                 "operationId": "deleteProperty",
@@ -1211,9 +1175,7 @@
         },
         "/properties/my-properties": {
             "get": {
-                "tags": [
-                    "Properties"
-                ],
+                "tags": ["Properties"],
                 "summary": "Mes biens immobiliers",
                 "description": "Récupère la liste des biens de l'utilisateur authentifié",
                 "operationId": "myProperties",
@@ -1282,9 +1244,7 @@
         },
         "/properties/{id}/toggle-publish": {
             "post": {
-                "tags": [
-                    "Properties"
-                ],
+                "tags": ["Properties"],
                 "summary": "Basculer le statut de publication",
                 "description": "Publie ou dépublie un bien. Seul le propriétaire ou un admin peut modifier.",
                 "operationId": "togglePublish",
@@ -1402,11 +1362,7 @@
                     "role": {
                         "description": "Rôle de l'utilisateur",
                         "type": "string",
-                        "enum": [
-                            "admin",
-                            "agent",
-                            "guest"
-                        ],
+                        "enum": ["admin", "agent", "guest"],
                         "example": "agent"
                     },
                     "created_at": {
@@ -1482,11 +1438,7 @@
                     "status": {
                         "description": "Statut du bien",
                         "type": "string",
-                        "enum": [
-                            "disponible",
-                            "vendu",
-                            "location"
-                        ],
+                        "enum": ["disponible", "vendu", "location"],
                         "example": "disponible"
                     },
                     "is_published": {

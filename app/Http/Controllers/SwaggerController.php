@@ -12,7 +12,7 @@ use OpenApi\Annotations as OA;
  * )
  * 
  * @OA\Server(
- *     url="http://localhost:8000/api",
+ *     url="https://agence-immobliere-main-gjykqe.laravel.cloud/api",
  * )
  * 
  * @OA\SecurityScheme(
