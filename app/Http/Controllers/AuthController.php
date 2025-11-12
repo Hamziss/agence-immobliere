@@ -32,7 +32,15 @@ class AuthController extends Controller
    *             @OA\Property(property="role", type="string", enum={"agent","guest"}, example="agent")
    *         )
    *     ),
-   *     @OA\Response(response=201, description="Inscription réussie"),
+   *     @OA\Response(
+   *         response=201,
+   *         description="Inscription réussie",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Inscription réussie."),
+   *             @OA\Property(property="user", ref="#/components/schemas/User"),
+   *             @OA\Property(property="token", type="string", example="1|xxxxxxxxxxxxxxxxxxxx")
+   *         )
+   *     ),
    *     @OA\Response(response=422, description="Erreur de validation"),
    *     @OA\Response(response=400, description="Erreur")
    * )
@@ -76,7 +84,15 @@ class AuthController extends Controller
    *             @OA\Property(property="password", type="string", format="password", example="password123")
    *         )
    *     ),
-   *     @OA\Response(response=200, description="Connexion réussie"),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Connexion réussie",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Connexion réussie."),
+   *             @OA\Property(property="user", ref="#/components/schemas/User"),
+   *             @OA\Property(property="token", type="string", example="1|xxxxxxxxxxxxxxxxxxxx")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Identifiants incorrects")
    * )
    */
@@ -107,7 +123,13 @@ class AuthController extends Controller
    *     summary="Déconnexion utilisateur",
    *     tags={"Authentication"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Response(response=200, description="Déconnexion réussie"),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Déconnexion réussie",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Déconnexion réussie.")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié")
    * )
    */
@@ -133,7 +155,13 @@ class AuthController extends Controller
    *     summary="Obtenir le profil utilisateur",
    *     tags={"Authentication"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Response(response=200, description="Profil utilisateur"),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Profil utilisateur",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="user", ref="#/components/schemas/User")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié")
    * )
    */

@@ -64,7 +64,27 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Inscription réussie"
+                        "description": "Inscription réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inscription réussie."
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|xxxxxxxxxxxxxxxxxxxx"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Erreur de validation"
@@ -110,7 +130,27 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Connexion réussie"
+                        "description": "Connexion réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Connexion réussie."
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|xxxxxxxxxxxxxxxxxxxx"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Identifiants incorrects"
@@ -127,7 +167,20 @@
                 "operationId": "0d29c740dc06d77602af8095bf4654cc",
                 "responses": {
                     "200": {
-                        "description": "Déconnexion réussie"
+                        "description": "Déconnexion réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Déconnexion réussie."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -149,7 +202,19 @@
                 "operationId": "a9c495788506b114956e3f509e5d90a2",
                 "responses": {
                     "200": {
-                        "description": "Profil utilisateur"
+                        "description": "Profil utilisateur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -204,7 +269,26 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Images téléchargées avec succès"
+                        "description": "Images téléchargées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Images téléchargées avec succès."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Image"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -246,7 +330,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Image supprimée avec succès"
+                        "description": "Image supprimée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Image supprimée avec succès."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -285,7 +382,23 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Image définie comme principale"
+                        "description": "Image définie comme principale",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Image définie comme principale avec succès."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Image"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -357,7 +470,7 @@
                         "required": false,
                         "schema": {
                             "type": "number",
-                            "example": 10000000
+                            "example": 1000000
                         }
                     },
                     {
@@ -366,7 +479,7 @@
                         "required": false,
                         "schema": {
                             "type": "number",
-                            "example": 20000000
+                            "example": 2000000000
                         }
                     },
                     {
@@ -375,7 +488,7 @@
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "example": "vue mer"
+                            "example": ""
                         }
                     },
                     {
@@ -484,7 +597,23 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Bien créé avec succès"
+                        "description": "Bien créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bien créé avec succès."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Property"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -517,13 +646,29 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example": 1
+                            "example": 2
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Détails du bien récupérés"
+                        "description": "Détails du bien récupérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Détails du bien récupérés avec succès."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Property"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Bien non trouvé"
@@ -546,7 +691,7 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example": 1
+                            "example": 5
                         }
                     }
                 ],
@@ -614,7 +759,23 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Bien mis à jour avec succès"
+                        "description": "Bien mis à jour avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bien mis à jour avec succès."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Property"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -651,7 +812,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Bien supprimé avec succès"
+                        "description": "Bien supprimé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bien supprimé avec succès."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -684,13 +858,29 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example": 1
+                            "example": 5
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Statut modifié avec succès"
+                        "description": "Statut modifié avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Statut de publication modifié avec succès."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Property"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Non authentifié"

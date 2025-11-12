@@ -38,7 +38,14 @@ class ImageController extends Controller
    *             )
    *         )
    *     ),
-   *     @OA\Response(response=201, description="Images téléchargées avec succès"),
+   *     @OA\Response(
+   *         response=201,
+   *         description="Images téléchargées avec succès",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Images téléchargées avec succès."),
+   *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Image"))
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié"),
    *     @OA\Response(response=403, description="Action non autorisée"),
    *     @OA\Response(response=404, description="Bien non trouvé"),
@@ -87,7 +94,13 @@ class ImageController extends Controller
    *     tags={"Images"},
    *     security={{"bearerAuth":{}}},
    *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
-   *     @OA\Response(response=200, description="Image supprimée avec succès"),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Image supprimée avec succès",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Image supprimée avec succès.")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié"),
    *     @OA\Response(response=403, description="Action non autorisée"),
    *     @OA\Response(response=404, description="Image non trouvée")
@@ -118,7 +131,14 @@ class ImageController extends Controller
    *     tags={"Images"},
    *     security={{"bearerAuth":{}}},
    *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
-   *     @OA\Response(response=200, description="Image définie comme principale"),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Image définie comme principale",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Image définie comme principale avec succès."),
+   *             @OA\Property(property="data", ref="#/components/schemas/Image")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié"),
    *     @OA\Response(response=403, description="Action non autorisée"),
    *     @OA\Response(response=404, description="Image non trouvée")

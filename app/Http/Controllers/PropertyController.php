@@ -29,9 +29,9 @@ class PropertyController extends Controller
    *     @OA\Parameter(name="city", in="query", required=false, @OA\Schema(type="string", example="Alger")),
    *     @OA\Parameter(name="type", in="query", required=false, @OA\Schema(type="string", enum={"appartement","villa","terrain","bureau","local_commercial"}, example="appartement")),
    *     @OA\Parameter(name="status", in="query", required=false, @OA\Schema(type="string", enum={"disponible","vendu","location"}, example="disponible")),
-   *     @OA\Parameter(name="price_min", in="query", required=false, @OA\Schema(type="number", example=10000000)),
-   *     @OA\Parameter(name="price_max", in="query", required=false, @OA\Schema(type="number", example=20000000)),
-   *     @OA\Parameter(name="search", in="query", required=false, @OA\Schema(type="string", example="vue mer")),
+   *     @OA\Parameter(name="price_min", in="query", required=false, @OA\Schema(type="number", example=1000000)),
+   *     @OA\Parameter(name="price_max", in="query", required=false, @OA\Schema(type="number", example=2000000000)),
+   *     @OA\Parameter(name="search", in="query", required=false, @OA\Schema(type="string", example="")),
    *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer", default=15, example=10)),
    *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", default=1, example=1)),
    *     @OA\Response(response=200, description="Liste des biens récupérée avec succès")
@@ -89,7 +89,14 @@ class PropertyController extends Controller
    *             @OA\Property(property="is_published", type="boolean", example=true)
    *         )
    *     ),
-   *     @OA\Response(response=201, description="Bien créé avec succès"),
+   *     @OA\Response(
+   *         response=201,
+   *         description="Bien créé avec succès",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Bien créé avec succès."),
+   *             @OA\Property(property="data", ref="#/components/schemas/Property")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié"),
    *     @OA\Response(response=403, description="Action non autorisée"),
    *     @OA\Response(response=422, description="Erreur de validation")
@@ -134,8 +141,15 @@ class PropertyController extends Controller
    *     path="/properties/{id}",
    *     summary="Afficher un bien spécifique",
    *     tags={"Properties"},
-   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
-   *     @OA\Response(response=200, description="Détails du bien récupérés"),
+   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=2)),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Détails du bien récupérés",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Détails du bien récupérés avec succès."),
+   *             @OA\Property(property="data", ref="#/components/schemas/Property")
+   *         )
+   *     ),
    *     @OA\Response(response=404, description="Bien non trouvé"),
    *     @OA\Response(response=403, description="Accès non autorisé")
    * )
@@ -171,7 +185,7 @@ class PropertyController extends Controller
    *     summary="Mettre à jour un bien",
    *     tags={"Properties"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
+   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=5)),
    *     @OA\RequestBody(
    *         required=false,
    *         @OA\JsonContent(
@@ -186,7 +200,14 @@ class PropertyController extends Controller
    *             @OA\Property(property="is_published", type="boolean", example=true)
    *         )
    *     ),
-   *     @OA\Response(response=200, description="Bien mis à jour avec succès"),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Bien mis à jour avec succès",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Bien mis à jour avec succès."),
+   *             @OA\Property(property="data", ref="#/components/schemas/Property")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié"),
    *     @OA\Response(response=403, description="Action non autorisée"),
    *     @OA\Response(response=404, description="Bien non trouvé")
@@ -238,7 +259,13 @@ class PropertyController extends Controller
    *     tags={"Properties"},
    *     security={{"bearerAuth":{}}},
    *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
-   *     @OA\Response(response=200, description="Bien supprimé avec succès"),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Bien supprimé avec succès",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Bien supprimé avec succès.")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié"),
    *     @OA\Response(response=403, description="Action non autorisée"),
    *     @OA\Response(response=404, description="Bien non trouvé")
@@ -276,8 +303,15 @@ class PropertyController extends Controller
    *     summary="Basculer le statut de publication",
    *     tags={"Properties"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
-   *     @OA\Response(response=200, description="Statut modifié avec succès"),
+   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=5)),
+   *     @OA\Response(
+   *         response=200,
+   *         description="Statut modifié avec succès",
+   *         @OA\JsonContent(
+   *             @OA\Property(property="message", type="string", example="Statut de publication modifié avec succès."),
+   *             @OA\Property(property="data", ref="#/components/schemas/Property")
+   *         )
+   *     ),
    *     @OA\Response(response=401, description="Non authentifié"),
    *     @OA\Response(response=403, description="Action non autorisée"),
    *     @OA\Response(response=404, description="Bien non trouvé")
