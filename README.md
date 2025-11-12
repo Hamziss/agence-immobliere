@@ -1,59 +1,483 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API Gestion d'Agence Immobilière
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API RESTful développée avec Laravel 12 pour la gestion d'une agence immobilière. Cette application permet la gestion des biens immobiliers avec un système d'authentification basé sur des rôles (Admin, Agent, Guest).
 
-## About Laravel
+## Table des matières
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   [Fonctionnalités](#fonctionnalités)
+-   [Installation](#installation)
+-   [Configuration](#️-configuration)
+-   [Variables d'environnement](#-variables-denvironnement)
+-   [Architecture](#architecture)
+-   [Rôles et Permissions](#-rôles-et-permissions)
+-   [Documentation API](#-documentation-api)
+-   [Exemples de requêtes](#-exemples-de-requêtes)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Fonctionnalités
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **Authentification sécurisée** avec Laravel Sanctum
+-   **Gestion multi-rôles** : Admin, Agent, Guest
+-   **CRUD complet** pour les biens immobiliers
+-   **Système de filtrage avancé** (ville, type, prix, statut)
+-   **Gestion d'images** avec upload multiple et image principale
+-   **Soft Delete** pour les biens supprimés
+-   **Publication/dépublication** des annonces
+-   **Documentation API** automatique avec Swagger/OpenAPI
+-   **Architecture propre** : Controller → Service → Repository
+-   **Validation robuste** avec Form Requests
+-   **DTOs** pour le transfert de données
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 1. Cloner le repository
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone https://github.com/Hamziss/agence-immobliere.git
+cd agence-immobliere
+```
 
-## Laravel Sponsors
+### 2. Installer les dépendances PHP
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+### 3. Installer les dépendances JavaScript
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+npm install
+```
 
-## Contributing
+### 4. Configurer l'environnement
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# Copier le fichier d'environnement
+cp .env.example .env
 
-## Code of Conduct
+# Générer la clé d'application
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Configurer la base de données
 
-## Security Vulnerabilities
+Créer le fichier de base de données SQLite (par défaut) :
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+# Créer le répertoire database s'il n'existe pas
+mkdir -p database
 
-## License
+# Créer le fichier de base de données
+touch database/database.sqlite
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Ou configurer MySQL/PostgreSQL dans le fichier `.env` (voir section [Variables d'environnement](#-variables-denvironnement)).
+
+### 6. Exécuter les migrations
+
+```bash
+php artisan migrate
+```
+
+### 7. (Optionnel) Peupler la base de données
+
+```bash
+php artisan db:seed
+```
+
+Cette commande créera :
+
+-   Un utilisateur admin par défaut
+-   Quelques utilisateurs agents et guests
+-   Des biens immobiliers de démonstration
+
+### 8. Créer le lien symbolique pour le stockage
+
+```bash
+php artisan storage:link
+```
+
+### 9. Compiler les assets
+
+```bash
+npm run build
+```
+
+### 10. Générer la documentation Swagger
+
+```bash
+php artisan l5-swagger:generate
+```
+
+### 11. Démarrer le serveur
+
+```bash
+php artisan serve
+```
+
+L'application sera accessible sur `http://localhost:8000`
+
+## ⚙️ Configuration
+
+### Configuration rapide avec Composer
+
+Vous pouvez utiliser la commande Composer pour une installation automatisée :
+
+```bash
+composer run setup
+```
+
+Cette commande exécutera automatiquement :
+
+-   `composer install`
+-   Copie de `.env.example` vers `.env`
+-   `php artisan key:generate`
+-   `php artisan migrate`
+-   `npm install`
+-   `npm run build`
+
+## 🔐 Variables d'environnement
+
+### Variables essentielles
+
+```env
+# Application
+APP_NAME="Agence Immobilière API"
+APP_ENV=local
+APP_KEY=base64:...  # Généré automatiquement
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+
+# Base de données (SQLite par défaut)
+DB_CONNECTION=sqlite
+# Ou pour MySQL
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=agence_immobiliere
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Session & Cache
+SESSION_DRIVER=database
+CACHE_STORE=database
+
+# File Storage
+FILESYSTEM_DISK=local
+
+# Queue
+QUEUE_CONNECTION=database
+
+
+```
+
+## Architecture
+
+L'application suit une architecture en couches inspirée du pattern **Repository** et **Service Layer** :
+
+### Flux de données
+
+```
+Client Request
+    ↓
+Routes (api.php)
+    ↓
+Controller (validation des permissions)
+    ↓
+Service (logique métier)
+    ↓
+Repository (accès aux données)
+    ↓
+Model / Database
+```
+
+### Structure détaillée
+
+#### 1. **Controllers** (`app/Http/Controllers`)
+
+-   Point d'entrée des requêtes HTTP
+-   Validation via Form Requests
+-   Délègue la logique métier aux Services
+-   Retourne des Responses formatées (JSON Resources)
+
+#### 2. **Services** (`app/Services`)
+
+-   Contient la **logique métier**
+-   Orchestre les opérations complexes
+-   Gère les autorisations via Policies
+-   Communique avec les Repositories
+
+#### 3. **Repositories** (`app/Repositories`)
+
+-   **Abstraction de l'accès aux données**
+-   Méthodes réutilisables pour interagir avec la base de données
+-   Encapsule les requêtes Eloquent complexes
+
+#### 4. **DTOs** (Data Transfer Objects - `app/DTOs`)
+
+-   **Utilisation flexible** : utilisés pour transférer des données entre les couches
+-   Immutables et type-safe
+-   Facilitent la validation et la transformation des données
+
+**Note** : Les DTOs sont utilisés de manière flexible. Certaines opérations simples peuvent utiliser directement les Models Eloquent, tandis que les opérations complexes bénéficient de la structure et validation des DTOs.
+
+#### 5. **Models** (`app/Models`)
+
+-   Représentent les tables de la base de données
+-   Définissent les relations Eloquent
+-   Contiennent les accessors/mutators et casts
+
+**Exemple** : `Property` avec ses relations `user`, `images`, scopes, etc.
+
+#### 6. **Policies** (`app/Policies`)
+
+-   Gèrent les **autorisations granulaires**
+-   Déterminent qui peut faire quoi sur chaque ressource
+
+**Exemple** : `PropertyPolicy` définit qui peut créer, voir, modifier ou supprimer un bien.
+
+#### 7. **Form Requests** (`app/Http/Requests`)
+
+-   **Validation centralisée** des requêtes
+-   Règles de validation réutilisables
+-   Messages d'erreur personnalisés
+
+#### 8. **Resources** (`app/Http/Resources`)
+
+-   **Transformation des données** pour les réponses API
+-   Format JSON cohérent
+-   Masquage des données sensibles
+
+## 👥 Rôles et Permissions
+
+### Rôles disponibles
+
+| Rôle      | Description                                |
+| --------- | ------------------------------------------ |
+| **admin** | Accès complet à toutes les fonctionnalités |
+| **agent** | Peut gérer ses propres biens immobiliers   |
+| **guest** | Accès en lecture seule aux biens publiés   |
+
+### Matrice des permissions
+
+| Action                     | Admin | Agent          | Guest | Non authentifié |
+| -------------------------- | ----- | -------------- | ----- | --------------- |
+| **Authentification**       |
+| S'inscrire                 | ✅    | ✅             | ✅    | ✅              |
+| Se connecter               | ✅    | ✅             | ✅    | ✅              |
+| Se déconnecter             | ✅    | ✅             | ✅    | ❌              |
+| Voir son profil            | ✅    | ✅             | ✅    | ❌              |
+| **Biens immobiliers**      |
+| Voir liste (publiés)       | ✅    | ✅             | ✅    | ✅              |
+| Voir liste (tous)          | ✅    | ❌             | ❌    | ❌              |
+| Voir détails (publiés)     | ✅    | ✅             | ✅    | ✅              |
+| Voir détails (non publiés) | ✅    | ✅ (ses biens) | ❌    | ❌              |
+| Créer un bien              | ✅    | ✅             | ❌    | ❌              |
+| Modifier un bien           | ✅    | ✅ (ses biens) | ❌    | ❌              |
+| Supprimer un bien          | ✅    | ✅ (ses biens) | ❌    | ❌              |
+| Publier/dépublier          | ✅    | ✅ (ses biens) | ❌    | ❌              |
+| **Images**                 |
+| Uploader des images        | ✅    | ✅ (ses biens) | ❌    | ❌              |
+| Supprimer une image        | ✅    | ✅ (ses biens) | ❌    | ❌              |
+| Définir image principale   | ✅    | ✅ (ses biens) | ❌    | ❌              |
+
+## 📚 Documentation API
+
+La documentation complète de l'API est disponible via Swagger UI :
+
+```
+http://localhost:8000/api/documentation
+```
+
+## 📖 Exemples de requêtes
+
+### 1. Inscription (Register)
+
+**Requête** :
+
+```bash
+curl -X POST http://localhost:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "password_confirmation": "password123",
+    "role": "agent"
+  }'
+```
+
+**Réponse** (201 Created) :
+
+```json
+{
+    "message": "Inscription réussie.",
+    "user": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "role": "agent",
+        "created_at": "2025-11-12T10:00:00.000000Z"
+    },
+    "token": "1|abc123xyz456..."
+}
+```
+
+### 2. Connexion (Login)
+
+**Requête** :
+
+```bash
+curl -X POST http://localhost:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+**Réponse** (200 OK) :
+
+```json
+{
+    "message": "Connexion réussie.",
+    "user": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "role": "agent"
+    },
+    "token": "2|def789uvw012..."
+}
+```
+
+### 3. Créer un bien immobilier
+
+**Requête** :
+
+```bash
+curl -X POST http://localhost:8000/api/properties \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer 2|def789uvw012..." \
+  -d '{
+    "type": "appartement",
+    "rooms": 3,
+    "surface": 85.5,
+    "price": 250000,
+    "city": "Casablanca",
+    "district": "Maarif",
+    "description": "Bel appartement lumineux avec vue sur mer",
+    "status": "disponible",
+    "is_published": true
+  }'
+```
+
+**Réponse** (201 Created) :
+
+```json
+{
+    "message": "Bien créé avec succès.",
+    "property": {
+        "id": 1,
+        "title": "Appartement à Casablanca - 3 pièces - 85.5 m²",
+        "type": "appartement",
+        "rooms": 3,
+        "surface": "85.50",
+        "price": "250000.00",
+        "city": "Casablanca",
+        "district": "Maarif",
+        "description": "Bel appartement lumineux avec vue sur mer",
+        "status": "disponible",
+        "is_published": true,
+        "user": {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "role": "agent"
+        },
+        "images": [],
+        "primary_image": null,
+        "created_at": "2025-11-12T10:15:00.000000Z"
+    }
+}
+```
+
+### 4. Liste filtrée des biens
+
+**Requête** :
+
+```bash
+curl -X GET "http://localhost:8000/api/properties?city=Casablanca&type=appartement&price_min=200000&price_max=300000&status=disponible&per_page=10&page=1" \
+  -H "Accept: application/json"
+```
+
+**Réponse** (200 OK) :
+
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "title": "Appartement à Casablanca - 3 pièces - 85.5 m²",
+            "type": "appartement",
+            "rooms": 3,
+            "surface": "85.50",
+            "price": "250000.00",
+            "city": "Casablanca",
+            "district": "Maarif",
+            "status": "disponible",
+            "is_published": true,
+            "primary_image": null,
+            "images_count": 0,
+            "created_at": "2025-11-12T10:15:00.000000Z"
+        }
+    ],
+    "links": {
+        "first": "http://localhost:8000/api/properties?page=1",
+        "last": "http://localhost:8000/api/properties?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "per_page": 10,
+        "to": 1,
+        "total": 1
+    }
+}
+```
+
+### Paramètres de filtrage disponibles
+
+| Paramètre   | Type   | Description         | Exemple              |
+| ----------- | ------ | ------------------- | -------------------- |
+| `city`      | string | Filtrer par ville   | `?city=Casablanca`   |
+| `type`      | string | Filtrer par type    | `?type=appartement`  |
+| `price_min` | float  | Prix minimum        | `?price_min=200000`  |
+| `price_max` | float  | Prix maximum        | `?price_max=500000`  |
+| `status`    | string | Filtrer par statut  | `?status=disponible` |
+| `search`    | string | Recherche textuelle | `?search=vue+mer`    |
+| `per_page`  | int    | Résultats par page  | `?per_page=15`       |
+| `page`      | int    | Numéro de page      | `?page=2`            |
+
+### Types de biens disponibles
+
+-   `appartement`
+-   `villa`
+-   `terrain`
+-   `bureau`
+-   `local_commercial`
+
+### Statuts disponibles
+
+-   `disponible`
+-   `vendu`
+-   `location`
+
+---
+
+**Développé avec ❤️ par Hamziss**
