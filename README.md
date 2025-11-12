@@ -115,6 +115,27 @@ php artisan serve
 
 L'application sera accessible sur `http://localhost:8000`
 
+## 👤 Utilisateurs de test
+
+| Rôle  | Nom            | Email              | Mot de passe |
+| ----- | -------------- | ------------------ | ------------ |
+| Admin | Admin User     | admin@digitup.com  | password123  |
+| Agent | Agent Mohammed | agent1@digitup.com | password123  |
+| Agent | Agent Fatima   | agent2@digitup.com | password123  |
+| Guest | Guest User     | guest@digitup.com  | password123  |
+
+### Exemple de connexion
+
+```bash
+POST http://localhost:8000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@digitup.com",
+  "password": "password123"
+}
+```
+
 ## Variables d'environnement
 
 ```env
