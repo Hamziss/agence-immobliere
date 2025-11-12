@@ -6,7 +6,6 @@ API RESTful développée avec Laravel 12 pour la gestion d'une agence immobiliè
 
 -   [Fonctionnalités](#fonctionnalités)
 -   [Installation](#installation)
--   [Configuration](#️-configuration)
 -   [Variables d'environnement](#-variables-denvironnement)
 -   [Architecture](#architecture)
 -   [Rôles et Permissions](#-rôles-et-permissions)
@@ -116,28 +115,7 @@ php artisan serve
 
 L'application sera accessible sur `http://localhost:8000`
 
-## ⚙️ Configuration
-
-### Configuration rapide avec Composer
-
-Vous pouvez utiliser la commande Composer pour une installation automatisée :
-
-```bash
-composer run setup
-```
-
-Cette commande exécutera automatiquement :
-
--   `composer install`
--   Copie de `.env.example` vers `.env`
--   `php artisan key:generate`
--   `php artisan migrate`
--   `npm install`
--   `npm run build`
-
-## 🔐 Variables d'environnement
-
-### Variables essentielles
+## Variables d'environnement
 
 ```env
 # Application
@@ -156,18 +134,6 @@ DB_CONNECTION=sqlite
 # DB_DATABASE=agence_immobiliere
 # DB_USERNAME=root
 # DB_PASSWORD=
-
-# Session & Cache
-SESSION_DRIVER=database
-CACHE_STORE=database
-
-# File Storage
-FILESYSTEM_DISK=local
-
-# Queue
-QUEUE_CONNECTION=database
-
-
 ```
 
 ## Architecture
@@ -219,14 +185,6 @@ Model / Database
 -   Facilitent la validation et la transformation des données
 
 **Note** : Les DTOs sont utilisés de manière flexible. Certaines opérations simples peuvent utiliser directement les Models Eloquent, tandis que les opérations complexes bénéficient de la structure et validation des DTOs.
-
-#### 5. **Models** (`app/Models`)
-
--   Représentent les tables de la base de données
--   Définissent les relations Eloquent
--   Contiennent les accessors/mutators et casts
-
-**Exemple** : `Property` avec ses relations `user`, `images`, scopes, etc.
 
 #### 6. **Policies** (`app/Policies`)
 
