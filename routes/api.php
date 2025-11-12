@@ -36,7 +36,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/{id}', [PropertyController::class, 'update']);
     Route::delete('/{id}', [PropertyController::class, 'destroy']);
     Route::post('/{id}/toggle-publish', [PropertyController::class, 'togglePublish']);
-    Route::get('/my-properties', [PropertyController::class, 'myProperties']);
   });
 
   // Image routes

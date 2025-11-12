@@ -429,60 +429,6 @@ class PropertyController extends Controller
   }
 
   /**
-   * @OA\Get(
-   *     path="/properties/my-properties",
-   *     summary="Mes biens immobiliers",
-   *     description="Récupère la liste des biens de l'utilisateur authentifié",
-   *     operationId="myProperties",
-   *     tags={"Properties"},
-   *     security={{"bearerAuth":{}}},
-   *     @OA\Parameter(
-   *         name="per_page",
-   *         in="query",
-   *         description="Nombre de résultats par page",
-   *         required=false,
-   *         @OA\Schema(type="integer", default=15, example=10)
-   *     ),
-   *     @OA\Response(
-   *         response=200,
-   *         description="Vos biens récupérés avec succès",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Vos biens récupérés avec succès."),
-   *             @OA\Property(
-   *                 property="data",
-   *                 type="array",
-   *                 @OA\Items(ref="#/components/schemas/Property")
-   *             ),
-   *             @OA\Property(property="meta", ref="#/components/schemas/PaginationMeta")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=401,
-   *         description="Non authentifié",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated."))
-   *     )
-   * )
-   */
-  public function myProperties(Request $request): JsonResponse
-  {
-    $perPage = $request->input('per_page', 15);
-    $properties = $this->propertyService->getUserProperties($request->user()->id, $perPage);
-
-    return response()->json([
-      'message' => 'Vos biens récupérés avec succès.',
-      'data' => PropertyResource::collection($properties),
-      'meta' => [
-        'current_page' => $properties->currentPage(),
-        'from' => $properties->firstItem(),
-        'last_page' => $properties->lastPage(),
-        'per_page' => $properties->perPage(),
-        'to' => $properties->lastItem(),
-        'total' => $properties->total(),
-      ],
-    ]);
-  }
-
-  /**
    * @OA\Post(
    *     path="/properties/{id}/toggle-publish",
    *     summary="Basculer le statut de publication",
