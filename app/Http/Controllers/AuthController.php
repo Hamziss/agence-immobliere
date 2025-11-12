@@ -20,42 +20,21 @@ class AuthController extends Controller
    * @OA\Post(
    *     path="/auth/register",
    *     summary="Inscrire un nouvel utilisateur",
-   *     description="Crée un nouveau compte utilisateur. Seuls les rôles 'agent' et 'guest' sont autorisés via cette route. Les comptes admin doivent être créés directement en base de données.",
-   *     operationId="register",
    *     tags={"Authentication"},
    *     @OA\RequestBody(
    *         required=true,
-   *         description="Données d'inscription",
    *         @OA\JsonContent(
    *             required={"name","email","password","password_confirmation"},
-   *             @OA\Property(property="name", type="string", example="John Doe", description="Nom complet de l'utilisateur"),
-   *             @OA\Property(property="email", type="string", format="email", example="john@example.com", description="Adresse email unique"),
-   *             @OA\Property(property="password", type="string", format="password", example="password123", description="Mot de passe (min 8 caractères)"),
-   *             @OA\Property(property="password_confirmation", type="string", format="password", example="password123", description="Confirmation du mot de passe"),
-   *             @OA\Property(property="role", type="string", enum={"agent","guest"}, example="agent", description="Rôle de l'utilisateur (optionnel, défaut: guest). Le rôle 'admin' n'est PAS autorisé.")
+   *             @OA\Property(property="name", type="string", example="John Doe"),
+   *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+   *             @OA\Property(property="password", type="string", format="password", example="password123"),
+   *             @OA\Property(property="password_confirmation", type="string", format="password", example="password123"),
+   *             @OA\Property(property="role", type="string", enum={"agent","guest"}, example="agent")
    *         )
    *     ),
-   *     @OA\Response(
-   *         response=201,
-   *         description="Inscription réussie",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Inscription réussie."),
-   *             @OA\Property(property="user", ref="#/components/schemas/User"),
-   *             @OA\Property(property="token", type="string", example="1|xxxxxxxxxxxxxxxxxxxx", description="Token d'authentification Bearer")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=422,
-   *         description="Erreur de validation",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Le rôle doit être agent ou guest. Les admins ne peuvent pas être créés via cette route."),
-   *             @OA\Property(property="errors", type="object")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=400,
-   *         description="Erreur lors de l'inscription"
-   *     )
+   *     @OA\Response(response=201, description="Inscription réussie"),
+   *     @OA\Response(response=422, description="Erreur de validation"),
+   *     @OA\Response(response=400, description="Erreur")
    * )
    */
   public function register(RegisterRequest $request): JsonResponse
@@ -88,34 +67,17 @@ class AuthController extends Controller
    * @OA\Post(
    *     path="/auth/login",
    *     summary="Connexion utilisateur",
-   *     description="Authentifie un utilisateur et retourne un token Bearer",
-   *     operationId="login",
    *     tags={"Authentication"},
    *     @OA\RequestBody(
    *         required=true,
-   *         description="Identifiants de connexion",
    *         @OA\JsonContent(
    *             required={"email","password"},
-   *             @OA\Property(property="email", type="string", format="email", example="agent1@digitup.com", description="Adresse email"),
-   *             @OA\Property(property="password", type="string", format="password", example="password123", description="Mot de passe")
+   *             @OA\Property(property="email", type="string", format="email", example="agent1@digitup.com"),
+   *             @OA\Property(property="password", type="string", format="password", example="password123")
    *         )
    *     ),
-   *     @OA\Response(
-   *         response=200,
-   *         description="Connexion réussie",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Connexion réussie."),
-   *             @OA\Property(property="user", ref="#/components/schemas/User"),
-   *             @OA\Property(property="token", type="string", example="1|xxxxxxxxxxxxxxxxxxxx")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=401,
-   *         description="Identifiants incorrects",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Les identifiants sont incorrects.")
-   *         )
-   *     )
+   *     @OA\Response(response=200, description="Connexion réussie"),
+   *     @OA\Response(response=401, description="Identifiants incorrects")
    * )
    */
   public function login(LoginRequest $request): JsonResponse
@@ -143,21 +105,10 @@ class AuthController extends Controller
    * @OA\Post(
    *     path="/auth/logout",
    *     summary="Déconnexion utilisateur",
-   *     description="Révoque tous les tokens de l'utilisateur authentifié",
-   *     operationId="logout",
    *     tags={"Authentication"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Response(
-   *         response=200,
-   *         description="Déconnexion réussie",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Déconnexion réussie.")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=401,
-   *         description="Non authentifié"
-   *     )
+   *     @OA\Response(response=200, description="Déconnexion réussie"),
+   *     @OA\Response(response=401, description="Non authentifié")
    * )
    */
   public function logout(Request $request): JsonResponse
@@ -180,21 +131,10 @@ class AuthController extends Controller
    * @OA\Get(
    *     path="/auth/me",
    *     summary="Obtenir le profil utilisateur",
-   *     description="Retourne les informations de l'utilisateur authentifié",
-   *     operationId="me",
    *     tags={"Authentication"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Response(
-   *         response=200,
-   *         description="Profil utilisateur",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="user", ref="#/components/schemas/User")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=401,
-   *         description="Non authentifié"
-   *     )
+   *     @OA\Response(response=200, description="Profil utilisateur"),
+   *     @OA\Response(response=401, description="Non authentifié")
    * )
    */
   public function me(Request $request): JsonResponse

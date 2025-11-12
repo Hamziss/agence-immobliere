@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Property extends Model
 {
-  use HasFactory, SoftDeletes;
+  use HasFactory, SoftDeletes; // ulisation du Soft Delete
 
   /**
    * The attributes that are mass assignable.

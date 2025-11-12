@@ -7,8 +7,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Info(
  *     title="API Gestion de Biens Immobiliers - Digitup Company",
- *     version="1.0.0",
- *     description="API REST pour la gestion de biens immobiliers avec authentification par token et gestion des rôles (admin, agent, guest).",
+ *     version="1.0.0"
  * )
  * 
  * @OA\Server(
@@ -19,24 +18,12 @@ use OpenApi\Annotations as OA;
  *     securityScheme="bearerAuth",
  *     type="http",
  *     scheme="bearer",
- *     bearerFormat="Sanctum",
- *     description="Utilisez le token obtenu lors de la connexion. Format: Bearer {token}"
+ *     bearerFormat="Sanctum"
  * )
  * 
- * @OA\Tag(
- *     name="Authentication",
- *     description="Endpoints pour l'authentification (inscription, connexion, déconnexion)"
- * )
- * 
- * @OA\Tag(
- *     name="Properties",
- *     description="Gestion des biens immobiliers (CRUD, filtres, recherche)"
- * )
- * 
- * @OA\Tag(
- *     name="Images",
- *     description="Gestion des images des biens immobiliers"
- * )
+ * @OA\Tag(name="Authentication")
+ * @OA\Tag(name="Properties")
+ * @OA\Tag(name="Images")
  */
 class SwaggerController extends Controller
 {

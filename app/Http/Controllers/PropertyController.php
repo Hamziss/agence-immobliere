@@ -25,82 +25,21 @@ class PropertyController extends Controller
    * @OA\Get(
    *     path="/properties",
    *     summary="Liste des biens immobiliers",
-   *     description="Retourne la liste paginée des biens avec filtres et recherche. Les visiteurs ne voient que les biens publiés.",
-   *     operationId="getProperties",
    *     tags={"Properties"},
-   *     @OA\Parameter(
-   *         name="city",
-   *         in="query",
-   *         description="Filtrer par ville",
-   *         required=false,
-   *         @OA\Schema(type="string", example="Alger")
-   *     ),
-   *     @OA\Parameter(
-   *         name="type",
-   *         in="query",
-   *         description="Filtrer par type de bien",
-   *         required=false,
-   *         @OA\Schema(type="string", enum={"appartement","villa","terrain","bureau","local_commercial"}, example="appartement")
-   *     ),
-   *     @OA\Parameter(
-   *         name="status",
-   *         in="query",
-   *         description="Filtrer par statut",
-   *         required=false,
-   *         @OA\Schema(type="string", enum={"disponible","vendu","location"}, example="disponible")
-   *     ),
-   *     @OA\Parameter(
-   *         name="price_min",
-   *         in="query",
-   *         description="Prix minimum",
-   *         required=false,
-   *         @OA\Schema(type="number", example=10000000)
-   *     ),
-   *     @OA\Parameter(
-   *         name="price_max",
-   *         in="query",
-   *         description="Prix maximum",
-   *         required=false,
-   *         @OA\Schema(type="number", example=20000000)
-   *     ),
-   *     @OA\Parameter(
-   *         name="search",
-   *         in="query",
-   *         description="Recherche full-text (titre, description, ville)",
-   *         required=false,
-   *         @OA\Schema(type="string", example="vue mer")
-   *     ),
-   *     @OA\Parameter(
-   *         name="per_page",
-   *         in="query",
-   *         description="Nombre de résultats par page",
-   *         required=false,
-   *         @OA\Schema(type="integer", default=15, example=10)
-   *     ),
-   *     @OA\Parameter(
-   *         name="page",
-   *         in="query",
-   *         description="Numéro de page",
-   *         required=false,
-   *         @OA\Schema(type="integer", default=1, example=1)
-   *     ),
-   *     @OA\Response(
-   *         response=200,
-   *         description="Liste des biens récupérée avec succès",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Liste des biens récupérée avec succès."),
-   *             @OA\Property(
-   *                 property="data",
-   *                 type="array",
-   *                 @OA\Items(ref="#/components/schemas/Property")
-   *             ),
-   *             @OA\Property(property="meta", ref="#/components/schemas/PaginationMeta")
-   *         )
-   *     )
+   *     @OA\Parameter(name="city", in="query", required=false, @OA\Schema(type="string", example="Alger")),
+   *     @OA\Parameter(name="type", in="query", required=false, @OA\Schema(type="string", enum={"appartement","villa","terrain","bureau","local_commercial"}, example="appartement")),
+   *     @OA\Parameter(name="status", in="query", required=false, @OA\Schema(type="string", enum={"disponible","vendu","location"}, example="disponible")),
+   *     @OA\Parameter(name="price_min", in="query", required=false, @OA\Schema(type="number", example=10000000)),
+   *     @OA\Parameter(name="price_max", in="query", required=false, @OA\Schema(type="number", example=20000000)),
+   *     @OA\Parameter(name="search", in="query", required=false, @OA\Schema(type="string", example="vue mer")),
+   *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer", default=15, example=10)),
+   *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", default=1, example=1)),
+   *     @OA\Response(response=200, description="Liste des biens récupérée avec succès")
    * )
    */
   public function index(Request $request): JsonResponse
   {
+    // DTO layer
     $filters = new FilterPropertiesDTO(
       city: $request->input('city'),
       type: $request->input('type'),
@@ -112,7 +51,7 @@ class PropertyController extends Controller
       page: $request->input('page', 1),
     );
 
-
+    // Service layer
     $properties = $this->propertyService->getAllProperties($filters, $request->user());
 
     return response()->json([
@@ -133,8 +72,6 @@ class PropertyController extends Controller
    * @OA\Post(
    *     path="/properties",
    *     summary="Créer un nouveau bien",
-   *     description="Permet à un admin ou agent de créer un bien immobilier. Le titre est généré automatiquement.",
-   *     operationId="createProperty",
    *     tags={"Properties"},
    *     security={{"bearerAuth":{}}},
    *     @OA\RequestBody(
@@ -152,32 +89,10 @@ class PropertyController extends Controller
    *             @OA\Property(property="is_published", type="boolean", example=true)
    *         )
    *     ),
-   *     @OA\Response(
-   *         response=201,
-   *         description="Bien créé avec succès",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Bien créé avec succès."),
-   *             @OA\Property(property="data", ref="#/components/schemas/Property")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=401,
-   *         description="Non authentifié",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated."))
-   *     ),
-   *     @OA\Response(
-   *         response=403,
-   *         description="Action non autorisée (seuls admin et agent peuvent créer)",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="This action is unauthorized."))
-   *     ),
-   *     @OA\Response(
-   *         response=422,
-   *         description="Erreur de validation",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string"),
-   *             @OA\Property(property="errors", type="object")
-   *         )
-   *     )
+   *     @OA\Response(response=201, description="Bien créé avec succès"),
+   *     @OA\Response(response=401, description="Non authentifié"),
+   *     @OA\Response(response=403, description="Action non autorisée"),
+   *     @OA\Response(response=422, description="Erreur de validation")
    * )
    */
   public function store(StorePropertyRequest $request): JsonResponse
@@ -185,6 +100,7 @@ class PropertyController extends Controller
     try {
       $this->authorize('create', \App\Models\Property::class);
 
+      // DTO layer
       $dto = new CreatePropertyDTO(
         userId: $request->user()->id,
         type: $request->input('type'),
@@ -198,6 +114,7 @@ class PropertyController extends Controller
         isPublished: $request->input('is_published', false),
       );
 
+      // Service layer
       $property = $this->propertyService->createProperty($dto);
 
       return response()->json([
@@ -216,34 +133,11 @@ class PropertyController extends Controller
    * @OA\Get(
    *     path="/properties/{id}",
    *     summary="Afficher un bien spécifique",
-   *     description="Récupère les détails d'un bien. Les visiteurs ne peuvent voir que les biens publiés.",
-   *     operationId="showProperty",
    *     tags={"Properties"},
-   *     @OA\Parameter(
-   *         name="id",
-   *         in="path",
-   *         description="ID du bien",
-   *         required=true,
-   *         @OA\Schema(type="integer", example=1)
-   *     ),
-   *     @OA\Response(
-   *         response=200,
-   *         description="Détails du bien récupérés",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Détails du bien récupérés avec succès."),
-   *             @OA\Property(property="data", ref="#/components/schemas/Property")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=404,
-   *         description="Bien non trouvé",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Bien non trouvé."))
-   *     ),
-   *     @OA\Response(
-   *         response=403,
-   *         description="Accès non autorisé (bien non publié)",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="This action is unauthorized."))
-   *     )
+   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
+   *     @OA\Response(response=200, description="Détails du bien récupérés"),
+   *     @OA\Response(response=404, description="Bien non trouvé"),
+   *     @OA\Response(response=403, description="Accès non autorisé")
    * )
    */
   public function show(Request $request, int $id): JsonResponse
@@ -275,20 +169,11 @@ class PropertyController extends Controller
    * @OA\Put(
    *     path="/properties/{id}",
    *     summary="Mettre à jour un bien",
-   *     description="Permet au propriétaire ou à un admin de modifier un bien. Le titre est recalculé automatiquement.",
-   *     operationId="updateProperty",
    *     tags={"Properties"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Parameter(
-   *         name="id",
-   *         in="path",
-   *         description="ID du bien",
-   *         required=true,
-   *         @OA\Schema(type="integer", example=1)
-   *     ),
+   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
    *     @OA\RequestBody(
    *         required=false,
-   *         description="Tous les champs sont optionnels. Seuls les champs fournis seront mis à jour.",
    *         @OA\JsonContent(
    *             @OA\Property(property="type", type="string", enum={"appartement","villa","terrain","bureau","local_commercial"}, example="villa"),
    *             @OA\Property(property="rooms", type="integer", example=5),
@@ -301,29 +186,10 @@ class PropertyController extends Controller
    *             @OA\Property(property="is_published", type="boolean", example=true)
    *         )
    *     ),
-   *     @OA\Response(
-   *         response=200,
-   *         description="Bien mis à jour avec succès",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Bien mis à jour avec succès."),
-   *             @OA\Property(property="data", ref="#/components/schemas/Property")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=401,
-   *         description="Non authentifié",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated."))
-   *     ),
-   *     @OA\Response(
-   *         response=403,
-   *         description="Action non autorisée (seul le propriétaire ou admin peut modifier)",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="This action is unauthorized."))
-   *     ),
-   *     @OA\Response(
-   *         response=404,
-   *         description="Bien non trouvé",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Bien non trouvé."))
-   *     )
+   *     @OA\Response(response=200, description="Bien mis à jour avec succès"),
+   *     @OA\Response(response=401, description="Non authentifié"),
+   *     @OA\Response(response=403, description="Action non autorisée"),
+   *     @OA\Response(response=404, description="Bien non trouvé")
    * )
    */
   public function update(UpdatePropertyRequest $request, int $id): JsonResponse
@@ -369,37 +235,13 @@ class PropertyController extends Controller
    * @OA\Delete(
    *     path="/properties/{id}",
    *     summary="Supprimer un bien",
-   *     description="Supprime un bien (soft delete). Seul le propriétaire ou un admin peut supprimer.",
-   *     operationId="deleteProperty",
    *     tags={"Properties"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Parameter(
-   *         name="id",
-   *         in="path",
-   *         description="ID du bien",
-   *         required=true,
-   *         @OA\Schema(type="integer", example=1)
-   *     ),
-   *     @OA\Response(
-   *         response=200,
-   *         description="Bien supprimé avec succès",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Bien supprimé avec succès."))
-   *     ),
-   *     @OA\Response(
-   *         response=401,
-   *         description="Non authentifié",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated."))
-   *     ),
-   *     @OA\Response(
-   *         response=403,
-   *         description="Action non autorisée",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="This action is unauthorized."))
-   *     ),
-   *     @OA\Response(
-   *         response=404,
-   *         description="Bien non trouvé",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Bien non trouvé."))
-   *     )
+   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
+   *     @OA\Response(response=200, description="Bien supprimé avec succès"),
+   *     @OA\Response(response=401, description="Non authentifié"),
+   *     @OA\Response(response=403, description="Action non autorisée"),
+   *     @OA\Response(response=404, description="Bien non trouvé")
    * )
    */
   public function destroy(Request $request, int $id): JsonResponse
@@ -432,40 +274,13 @@ class PropertyController extends Controller
    * @OA\Post(
    *     path="/properties/{id}/toggle-publish",
    *     summary="Basculer le statut de publication",
-   *     description="Publie ou dépublie un bien. Seul le propriétaire ou un admin peut modifier.",
-   *     operationId="togglePublish",
    *     tags={"Properties"},
    *     security={{"bearerAuth":{}}},
-   *     @OA\Parameter(
-   *         name="id",
-   *         in="path",
-   *         description="ID du bien",
-   *         required=true,
-   *         @OA\Schema(type="integer", example=1)
-   *     ),
-   *     @OA\Response(
-   *         response=200,
-   *         description="Statut modifié avec succès",
-   *         @OA\JsonContent(
-   *             @OA\Property(property="message", type="string", example="Statut de publication modifié avec succès."),
-   *             @OA\Property(property="data", ref="#/components/schemas/Property")
-   *         )
-   *     ),
-   *     @OA\Response(
-   *         response=401,
-   *         description="Non authentifié",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated."))
-   *     ),
-   *     @OA\Response(
-   *         response=403,
-   *         description="Action non autorisée",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="This action is unauthorized."))
-   *     ),
-   *     @OA\Response(
-   *         response=404,
-   *         description="Bien non trouvé",
-   *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Bien non trouvé."))
-   *     )
+   *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer", example=1)),
+   *     @OA\Response(response=200, description="Statut modifié avec succès"),
+   *     @OA\Response(response=401, description="Non authentifié"),
+   *     @OA\Response(response=403, description="Action non autorisée"),
+   *     @OA\Response(response=404, description="Bien non trouvé")
    * )
    */
   public function togglePublish(Request $request, int $id): JsonResponse

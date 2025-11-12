@@ -2,7 +2,6 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Gestion de Biens Immobiliers - Digitup Company",
-        "description": "API REST pour la gestion de biens immobiliers avec authentification par token et gestion des rôles (admin, agent, guest).",
         "version": "1.0.0"
     },
     "servers": [
@@ -17,10 +16,8 @@
                     "Authentication"
                 ],
                 "summary": "Inscrire un nouvel utilisateur",
-                "description": "Crée un nouveau compte utilisateur. Seuls les rôles 'agent' et 'guest' sont autorisés via cette route. Les comptes admin doivent être créés directement en base de données.",
-                "operationId": "register",
+                "operationId": "ed42f392010c301892e640067141676e",
                 "requestBody": {
-                    "description": "Données d'inscription",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -33,30 +30,25 @@
                                 ],
                                 "properties": {
                                     "name": {
-                                        "description": "Nom complet de l'utilisateur",
                                         "type": "string",
                                         "example": "John Doe"
                                     },
                                     "email": {
-                                        "description": "Adresse email unique",
                                         "type": "string",
                                         "format": "email",
                                         "example": "john@example.com"
                                     },
                                     "password": {
-                                        "description": "Mot de passe (min 8 caractères)",
                                         "type": "string",
                                         "format": "password",
                                         "example": "password123"
                                     },
                                     "password_confirmation": {
-                                        "description": "Confirmation du mot de passe",
                                         "type": "string",
                                         "format": "password",
                                         "example": "password123"
                                     },
                                     "role": {
-                                        "description": "Rôle de l'utilisateur (optionnel, défaut: guest). Le rôle 'admin' n'est PAS autorisé.",
                                         "type": "string",
                                         "enum": [
                                             "agent",
@@ -72,50 +64,13 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Inscription réussie",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Inscription réussie."
-                                        },
-                                        "user": {
-                                            "$ref": "#/components/schemas/User"
-                                        },
-                                        "token": {
-                                            "description": "Token d'authentification Bearer",
-                                            "type": "string",
-                                            "example": "1|xxxxxxxxxxxxxxxxxxxx"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Inscription réussie"
                     },
                     "422": {
-                        "description": "Erreur de validation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Le rôle doit être agent ou guest. Les admins ne peuvent pas être créés via cette route."
-                                        },
-                                        "errors": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Erreur de validation"
                     },
                     "400": {
-                        "description": "Erreur lors de l'inscription"
+                        "description": "Erreur"
                     }
                 }
             }
@@ -126,10 +81,8 @@
                     "Authentication"
                 ],
                 "summary": "Connexion utilisateur",
-                "description": "Authentifie un utilisateur et retourne un token Bearer",
-                "operationId": "login",
+                "operationId": "8cb7742ae98d0990acb2907c4e00bf24",
                 "requestBody": {
-                    "description": "Identifiants de connexion",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -140,13 +93,11 @@
                                 ],
                                 "properties": {
                                     "email": {
-                                        "description": "Adresse email",
                                         "type": "string",
                                         "format": "email",
                                         "example": "agent1@digitup.com"
                                     },
                                     "password": {
-                                        "description": "Mot de passe",
                                         "type": "string",
                                         "format": "password",
                                         "example": "password123"
@@ -159,43 +110,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Connexion réussie",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Connexion réussie."
-                                        },
-                                        "user": {
-                                            "$ref": "#/components/schemas/User"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "example": "1|xxxxxxxxxxxxxxxxxxxx"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Connexion réussie"
                     },
                     "401": {
-                        "description": "Identifiants incorrects",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Les identifiants sont incorrects."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Identifiants incorrects"
                     }
                 }
             }
@@ -206,24 +124,10 @@
                     "Authentication"
                 ],
                 "summary": "Déconnexion utilisateur",
-                "description": "Révoque tous les tokens de l'utilisateur authentifié",
-                "operationId": "logout",
+                "operationId": "0d29c740dc06d77602af8095bf4654cc",
                 "responses": {
                     "200": {
-                        "description": "Déconnexion réussie",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Déconnexion réussie."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Déconnexion réussie"
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -242,23 +146,10 @@
                     "Authentication"
                 ],
                 "summary": "Obtenir le profil utilisateur",
-                "description": "Retourne les informations de l'utilisateur authentifié",
-                "operationId": "me",
+                "operationId": "a9c495788506b114956e3f509e5d90a2",
                 "responses": {
                     "200": {
-                        "description": "Profil utilisateur",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "user": {
-                                            "$ref": "#/components/schemas/User"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Profil utilisateur"
                     },
                     "401": {
                         "description": "Non authentifié"
@@ -277,13 +168,11 @@
                     "Images"
                 ],
                 "summary": "Télécharger des images pour un bien",
-                "description": "Permet au propriétaire ou à un admin d'ajouter des images à un bien. Une ou plusieurs images acceptées. Max 10 images, 5MB par image, formats: jpeg, png, webp.",
-                "operationId": "uploadImages",
+                "operationId": "6f034cb3d262284b72b9ac7b7daf4894",
                 "parameters": [
                     {
                         "name": "propertyId",
                         "in": "path",
-                        "description": "ID du bien",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -292,7 +181,6 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Envoyez un ou plusieurs fichiers dans le champ 'images'",
                     "required": true,
                     "content": {
                         "multipart/form-data": {
@@ -302,7 +190,6 @@
                                 ],
                                 "properties": {
                                     "images": {
-                                        "description": "Fichier(s) image(s) - Une seule image ou plusieurs (max 10)",
                                         "type": "array",
                                         "items": {
                                             "type": "string",
@@ -317,91 +204,19 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Images téléchargées avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Images téléchargées avec succès."
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Image"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Images téléchargées avec succès"
                     },
                     "401": {
-                        "description": "Non authentifié",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Non authentifié"
                     },
                     "403": {
-                        "description": "Action non autorisée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Vous n'êtes pas autorisé à ajouter des images à ce bien."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Action non autorisée"
                     },
                     "404": {
-                        "description": "Bien non trouvé",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Bien non trouvé"
                     },
                     "422": {
-                        "description": "Erreur de validation (taille, format, nombre)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "errors": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Erreur de validation"
                     }
                 },
                 "security": [
@@ -417,13 +232,11 @@
                     "Images"
                 ],
                 "summary": "Supprimer une image",
-                "description": "Supprime une image. Seul le propriétaire du bien ou un admin peut supprimer.",
-                "operationId": "deleteImage",
+                "operationId": "e783c82d15d2eb5b1f869023e8dd2081",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID de l'image",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -433,67 +246,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Image supprimée avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Image supprimée avec succès."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Image supprimée avec succès"
                     },
                     "401": {
-                        "description": "Non authentifié",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Non authentifié"
                     },
                     "403": {
-                        "description": "Action non autorisée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Vous n'êtes pas autorisé à supprimer cette image."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Action non autorisée"
                     },
                     "404": {
-                        "description": "Image non trouvée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Image non trouvée"
                     }
                 },
                 "security": [
@@ -509,13 +271,11 @@
                     "Images"
                 ],
                 "summary": "Définir une image comme principale",
-                "description": "Marque une image comme image principale du bien. L'ancienne image principale perd automatiquement ce statut.",
-                "operationId": "setPrimaryImage",
+                "operationId": "37e262f15c5d740fc4c210edc5cbffee",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID de l'image",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -525,70 +285,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Image définie comme principale",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Image définie comme principale avec succès."
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/Image"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Image définie comme principale"
                     },
                     "401": {
-                        "description": "Non authentifié",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Non authentifié"
                     },
                     "403": {
-                        "description": "Action non autorisée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Vous n'êtes pas autorisé à modifier cette image."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Action non autorisée"
                     },
                     "404": {
-                        "description": "Image non trouvée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Image non trouvée"
                     }
                 },
                 "security": [
@@ -604,13 +310,11 @@
                     "Properties"
                 ],
                 "summary": "Liste des biens immobiliers",
-                "description": "Retourne la liste paginée des biens avec filtres et recherche. Les visiteurs ne voient que les biens publiés.",
-                "operationId": "getProperties",
+                "operationId": "8adf02ac3c8ab1b3c0257b9c8879cb50",
                 "parameters": [
                     {
                         "name": "city",
                         "in": "query",
-                        "description": "Filtrer par ville",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -620,7 +324,6 @@
                     {
                         "name": "type",
                         "in": "query",
-                        "description": "Filtrer par type de bien",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -637,7 +340,6 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "Filtrer par statut",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -652,7 +354,6 @@
                     {
                         "name": "price_min",
                         "in": "query",
-                        "description": "Prix minimum",
                         "required": false,
                         "schema": {
                             "type": "number",
@@ -662,7 +363,6 @@
                     {
                         "name": "price_max",
                         "in": "query",
-                        "description": "Prix maximum",
                         "required": false,
                         "schema": {
                             "type": "number",
@@ -672,7 +372,6 @@
                     {
                         "name": "search",
                         "in": "query",
-                        "description": "Recherche full-text (titre, description, ville)",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -682,7 +381,6 @@
                     {
                         "name": "per_page",
                         "in": "query",
-                        "description": "Nombre de résultats par page",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -693,7 +391,6 @@
                     {
                         "name": "page",
                         "in": "query",
-                        "description": "Numéro de page",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -704,29 +401,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Liste des biens récupérée avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Liste des biens récupérée avec succès."
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Property"
-                                            }
-                                        },
-                                        "meta": {
-                                            "$ref": "#/components/schemas/PaginationMeta"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Liste des biens récupérée avec succès"
                     }
                 }
             },
@@ -735,8 +410,7 @@
                     "Properties"
                 ],
                 "summary": "Créer un nouveau bien",
-                "description": "Permet à un admin ou agent de créer un bien immobilier. Le titre est généré automatiquement.",
-                "operationId": "createProperty",
+                "operationId": "dec34a73835ae125a06d8a0fa64e38e6",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -810,73 +484,16 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Bien créé avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Bien créé avec succès."
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/Property"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Bien créé avec succès"
                     },
                     "401": {
-                        "description": "Non authentifié",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Non authentifié"
                     },
                     "403": {
-                        "description": "Action non autorisée (seuls admin et agent peuvent créer)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "This action is unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Action non autorisée"
                     },
                     "422": {
-                        "description": "Erreur de validation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "errors": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Erreur de validation"
                     }
                 },
                 "security": [
@@ -892,13 +509,11 @@
                     "Properties"
                 ],
                 "summary": "Afficher un bien spécifique",
-                "description": "Récupère les détails d'un bien. Les visiteurs ne peuvent voir que les biens publiés.",
-                "operationId": "showProperty",
+                "operationId": "14f780f6e0125a67285fd2acbfe6bfc3",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID du bien",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -908,55 +523,13 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Détails du bien récupérés",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Détails du bien récupérés avec succès."
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/Property"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Détails du bien récupérés"
                     },
                     "404": {
-                        "description": "Bien non trouvé",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Bien non trouvé."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Bien non trouvé"
                     },
                     "403": {
-                        "description": "Accès non autorisé (bien non publié)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "This action is unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Accès non autorisé"
                     }
                 }
             },
@@ -965,13 +538,11 @@
                     "Properties"
                 ],
                 "summary": "Mettre à jour un bien",
-                "description": "Permet au propriétaire ou à un admin de modifier un bien. Le titre est recalculé automatiquement.",
-                "operationId": "updateProperty",
+                "operationId": "8655c8954d57c6ff4e545e5ebdd141bb",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID du bien",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -980,7 +551,6 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Tous les champs sont optionnels. Seuls les champs fournis seront mis à jour.",
                     "required": false,
                     "content": {
                         "application/json": {
@@ -1044,71 +614,16 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Bien mis à jour avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Bien mis à jour avec succès."
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/Property"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Bien mis à jour avec succès"
                     },
                     "401": {
-                        "description": "Non authentifié",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Non authentifié"
                     },
                     "403": {
-                        "description": "Action non autorisée (seul le propriétaire ou admin peut modifier)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "This action is unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Action non autorisée"
                     },
                     "404": {
-                        "description": "Bien non trouvé",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Bien non trouvé."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Bien non trouvé"
                     }
                 },
                 "security": [
@@ -1122,13 +637,11 @@
                     "Properties"
                 ],
                 "summary": "Supprimer un bien",
-                "description": "Supprime un bien (soft delete). Seul le propriétaire ou un admin peut supprimer.",
-                "operationId": "deleteProperty",
+                "operationId": "999e4323eea15c4e2751dcdd6642b9c5",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID du bien",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1138,68 +651,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Bien supprimé avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Bien supprimé avec succès."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Bien supprimé avec succès"
                     },
                     "401": {
-                        "description": "Non authentifié",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Non authentifié"
                     },
                     "403": {
-                        "description": "Action non autorisée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "This action is unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Action non autorisée"
                     },
                     "404": {
-                        "description": "Bien non trouvé",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Bien non trouvé."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Bien non trouvé"
                     }
                 },
                 "security": [
@@ -1215,13 +676,11 @@
                     "Properties"
                 ],
                 "summary": "Basculer le statut de publication",
-                "description": "Publie ou dépublie un bien. Seul le propriétaire ou un admin peut modifier.",
-                "operationId": "togglePublish",
+                "operationId": "70e60395ab0af4eecc460dcc6978841b",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID du bien",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1231,71 +690,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Statut modifié avec succès",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Statut de publication modifié avec succès."
-                                        },
-                                        "data": {
-                                            "$ref": "#/components/schemas/Property"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Statut modifié avec succès"
                     },
                     "401": {
-                        "description": "Non authentifié",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Non authentifié"
                     },
                     "403": {
-                        "description": "Action non autorisée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "This action is unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Action non autorisée"
                     },
                     "404": {
-                        "description": "Bien non trouvé",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Bien non trouvé."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Bien non trouvé"
                     }
                 },
                 "security": [
@@ -1309,27 +713,21 @@
     "components": {
         "schemas": {
             "User": {
-                "title": "User",
-                "description": "Modèle utilisateur",
                 "properties": {
                     "id": {
-                        "description": "ID de l'utilisateur",
                         "type": "integer",
                         "example": 1
                     },
                     "name": {
-                        "description": "Nom de l'utilisateur",
                         "type": "string",
                         "example": "John Doe"
                     },
                     "email": {
-                        "description": "Email de l'utilisateur",
                         "type": "string",
                         "format": "email",
                         "example": "john@example.com"
                     },
                     "role": {
-                        "description": "Rôle de l'utilisateur",
                         "type": "string",
                         "enum": [
                             "admin",
@@ -1339,7 +737,6 @@
                         "example": "agent"
                     },
                     "created_at": {
-                        "description": "Date de création",
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-11-11 18:30:00"
@@ -1348,21 +745,16 @@
                 "type": "object"
             },
             "Property": {
-                "title": "Property",
-                "description": "Modèle de bien immobilier",
                 "properties": {
                     "id": {
-                        "description": "ID du bien",
                         "type": "integer",
                         "example": 1
                     },
                     "title": {
-                        "description": "Titre généré automatiquement",
                         "type": "string",
                         "example": "Villa 5 pièces - 250m² à Alger - Hydra"
                     },
                     "type": {
-                        "description": "Type de bien",
                         "type": "string",
                         "enum": [
                             "appartement",
@@ -1374,42 +766,35 @@
                         "example": "villa"
                     },
                     "rooms": {
-                        "description": "Nombre de pièces",
                         "type": "integer",
                         "example": 5,
                         "nullable": true
                     },
                     "surface": {
-                        "description": "Surface en m²",
                         "type": "number",
                         "format": "float",
                         "example": 250.5
                     },
                     "price": {
-                        "description": "Prix en DZD",
                         "type": "number",
                         "format": "float",
                         "example": 45000000
                     },
                     "city": {
-                        "description": "Ville",
                         "type": "string",
                         "example": "Alger"
                     },
                     "district": {
-                        "description": "Quartier/Commune",
                         "type": "string",
                         "example": "Hydra",
                         "nullable": true
                     },
                     "description": {
-                        "description": "Description détaillée",
                         "type": "string",
                         "example": "Belle villa moderne avec jardin",
                         "nullable": true
                     },
                     "status": {
-                        "description": "Statut du bien",
                         "type": "string",
                         "enum": [
                             "disponible",
@@ -1419,37 +804,15 @@
                         "example": "disponible"
                     },
                     "is_published": {
-                        "description": "Publié ou non",
                         "type": "boolean",
                         "example": true
                     },
-                    "user": {
-                        "$ref": "#/components/schemas/User"
-                    },
-                    "images": {
-                        "description": "Images du bien",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Image"
-                        }
-                    },
-                    "primary_image": {
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/Image"
-                            }
-                        ],
-                        "nullable": true,
-                        "description": "Image principale"
-                    },
                     "created_at": {
-                        "description": "Date de création",
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-11-11 18:30:00"
                     },
                     "updated_at": {
-                        "description": "Date de modification",
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-11-11 18:30:00"
@@ -1458,76 +821,31 @@
                 "type": "object"
             },
             "Image": {
-                "title": "Image",
-                "description": "Modèle d'image",
                 "properties": {
                     "id": {
-                        "description": "ID de l'image",
                         "type": "integer",
                         "example": 1
                     },
                     "filename": {
-                        "description": "Nom du fichier",
                         "type": "string",
                         "example": "image.jpg"
                     },
                     "url": {
-                        "description": "URL complète de l'image",
                         "type": "string",
                         "example": "http://localhost:8000/storage/properties/1/image.jpg"
                     },
                     "size": {
-                        "description": "Taille en bytes",
                         "type": "integer",
                         "example": 1024000
                     },
                     "is_primary": {
-                        "description": "Image principale",
                         "type": "boolean",
                         "example": true
                     },
                     "created_at": {
-                        "description": "Date de création",
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-11-11 18:30:00"
-                    }
-                },
-                "type": "object"
-            },
-            "PaginationMeta": {
-                "title": "Pagination Meta",
-                "description": "Métadonnées de pagination",
-                "properties": {
-                    "current_page": {
-                        "description": "Page actuelle",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "from": {
-                        "description": "Premier élément",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "last_page": {
-                        "description": "Dernière page",
-                        "type": "integer",
-                        "example": 5
-                    },
-                    "per_page": {
-                        "description": "Éléments par page",
-                        "type": "integer",
-                        "example": 15
-                    },
-                    "to": {
-                        "description": "Dernier élément",
-                        "type": "integer",
-                        "example": 15
-                    },
-                    "total": {
-                        "description": "Total d'éléments",
-                        "type": "integer",
-                        "example": 75
                     }
                 },
                 "type": "object"
@@ -1536,7 +854,6 @@
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
-                "description": "Utilisez le token obtenu lors de la connexion. Format: Bearer {token}",
                 "bearerFormat": "Sanctum",
                 "scheme": "bearer"
             }
@@ -1544,16 +861,13 @@
     },
     "tags": [
         {
-            "name": "Authentication",
-            "description": "Endpoints pour l'authentification (inscription, connexion, déconnexion)"
+            "name": "Authentication"
         },
         {
-            "name": "Properties",
-            "description": "Gestion des biens immobiliers (CRUD, filtres, recherche)"
+            "name": "Properties"
         },
         {
-            "name": "Images",
-            "description": "Gestion des images des biens immobiliers"
+            "name": "Images"
         }
     ]
 }
