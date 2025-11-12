@@ -12,7 +12,7 @@ use OpenApi\Annotations as OA;
  * )
  * 
  * @OA\Server(
- *     url="https://agence-immobliere-main-gjykqe.laravel.cloud/api",
+ *     url=L5_SWAGGER_CONST_HOST,
  * )
  * 
  * @OA\SecurityScheme(
