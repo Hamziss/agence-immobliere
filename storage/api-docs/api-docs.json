@@ -2,6 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Gestion de Biens Immobiliers - Digitup Company",
+        "description": "\r\nAPI RESTful pour la gestion d'une agence immobilière avec système d'authentification basé sur des rôles.\r\n\r\n## 👤 Utilisateurs de test\r\n| Rôle  | Email                | Mot de passe  |\r\n|-------|---------------------|---------------|\r\n| Admin | admin@digitup.com   | password123   |\r\n| Agent | agent1@digitup.com  | password123   |\r\n| Agent | agent2@digitup.com  | password123   |\r\n| Guest | guest@digitup.com   | password123   |\r\n",
         "version": "1.0.0"
     },
     "servers": [
