@@ -2,6 +2,8 @@
 
 API RESTful développée avec Laravel 12 pour la gestion d'une agence immobilière. Cette application permet la gestion des biens immobiliers avec un système d'authentification basé sur des rôles (Admin, Agent, Guest).
 
+**Documentation API:** https://agence-immobliere.laravel.cloud/api/documentation
+
 ## Table des matières
 
 -   [Fonctionnalités](#fonctionnalités)
